@@ -212,6 +212,10 @@ class BoundLoggerBase:
         """
         try:
             args, kw = self._process_event(method_name, event, event_kw)
+            if kw.get('extra', {}).get('_logger'):
+                del kw['extra']['_logger']
+            if kw.get('extra', {}).get('_name'):
+                del kw['extra']['_name']
             return getattr(self._logger, method_name)(*args, **kw)
         except DropEvent:
             return None
